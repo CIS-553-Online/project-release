@@ -3,7 +3,7 @@
 * APP VERBOSE ALL OFF
 * LS VERBOSE STATUS OFF
 * LS VERBOSE ERROR OFF
-* DV VERBOSE STATUS OFF
+* DV VERBOSE STATUS ON
 * DV VERBOSE ERROR OFF
 * APP VERBOSE STATUS OFF
 * APP VERBOSE ERROR OFF
@@ -37,10 +37,10 @@ TIME 10000
 LINK UP 1 8
 TIME 10000
 
-#TEST1 Dump Link State Neighbor Table.
+#TEST1 Dump Distance Vector Neighbor Table.
 1 DV DUMP NEIGHBORS
 
-#TEST2 Dump Link State Routing Table.
+#TEST2 Dump Distance Vector Routing Table.
 1 DV DUMP ROUTES
 
 # Quit the simulator
