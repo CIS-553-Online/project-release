@@ -475,7 +475,7 @@ uint32_t
 DVRoutingProtocol::GetNextSequenceNumber()
 {
   m_currentSequenceNumber = (m_currentSequenceNumber + 1) % (DV_MAX_SEQUENCE_NUMBER + 1);
-  return m_currentSequenceNumber++;
+  return m_currentSequenceNumber;
 }
 
 void DVRoutingProtocol::NotifyInterfaceUp(uint32_t i)
