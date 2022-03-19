@@ -1115,24 +1115,37 @@ main (int argc, char *argv[])
       NS_LOG_INFO ("Installing PennSearch Application...");
       PennSearchHelper appHelper = PennSearchHelper ();
       apps = appHelper.Install (realNodeContainer);
+
+      for (uint32_t i = 0 ; i < totalNodes ; i++)
+        {
+          Ptr<PennSearch> application = realNodeContainer.Get(i)->GetApplication(0)->GetObject<PennSearch> ();
+          application->SetNodeAddressMap (simulatorMain.g_nodeAddressMap);
+          application->SetAddressNodeMap (simulatorMain.g_addressNodeMap);
+          std::ostringstream str;
+          str << i;
+          application->SetNodeId (str.str());
+          application->SetLocalAddress (application->ResolveNodeIpAddress(str.str()));
+          application->SetModuleName (APP_MODULE_NAME);
+        }
     }
   else
     {
       NS_LOG_INFO ("Installing TestApp Application...");
       TestAppHelper appHelper = TestAppHelper ();
       apps = appHelper.Install (realNodeContainer);
+
+      for (uint32_t i = 0; i < totalNodes; i++)
+        {
+          Ptr<TestApp> application = realNodeContainer.Get (i)->GetApplication (0)->GetObject<TestApp> ();
+          application->SetNodeAddressMap (simulatorMain.g_nodeAddressMap);
+          application->SetAddressNodeMap (simulatorMain.g_addressNodeMap);
+          std::ostringstream str;
+          str << i;
+          application->SetNodeId (str.str ());
+          application->SetModuleName (APP_MODULE_NAME);
+        }
     }
-   
-  for (uint32_t i = 0; i < totalNodes; i++)
-    {
-      Ptr<TestApp> application = realNodeContainer.Get (i)->GetApplication (0)->GetObject<TestApp> ();
-      application->SetNodeAddressMap (simulatorMain.g_nodeAddressMap);
-      application->SetAddressNodeMap (simulatorMain.g_addressNodeMap);
-      std::ostringstream str;
-      str << i;
-      application->SetNodeId (str.str ());
-      application->SetModuleName (APP_MODULE_NAME);
-    }
+
   apps.Start (MilliSeconds (0));
 
   NS_LOG_INFO ("Creating script/command handler...");
