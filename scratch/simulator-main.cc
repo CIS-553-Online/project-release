@@ -73,6 +73,8 @@
 
 using namespace ns3;
 
+std::string project = "1";
+
 /* Log component for this file */
 NS_LOG_COMPONENT_DEFINE ("SimulatorMain");
 
@@ -442,35 +444,58 @@ SimulatorMain::ProcessNodeCommandTokens (uint32_t nodeNumber, std::vector<std::s
   // module name
   if (module == APP_MODULE_NAME || module == "APP")
     {
-      // Get application pointer
-      Ptr<TestApp> application = m_nodeContainer.Get (nodeNumber)->GetApplication (0)->GetObject<TestApp> ();
-      std::string command = std::string ((*iterator).c_str (), (*iterator).length ());
-      UpperCase (command);
-      if (command == "VERBOSITY" || command == "VERBOSE")
-        {
-          tokens.erase (iterator);
-          if (tokens.size () == 0)
+      if(project == "2") 
+      {
+         // Get application pointer
+        Ptr<PennSearch> application = m_nodeContainer.Get(nodeNumber)->GetApplication(0)->GetObject<PennSearch> ();
+        std::string command = std::string ((*iterator).c_str(), (*iterator).length());
+        UpperCase (command);
+        if (command == "VERBOSITY" || command == "VERBOSE")
+          {
+            tokens.erase (iterator);
+            if (tokens.size () == 0)
+              return;
+            Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &SimulatorMain::SetApplicationVerbose, this, application, tokens);
             return;
-          Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &SimulatorMain::SetApplicationVerbose, this,
-                               application, tokens);
-          return;
-        }
-      else
-        {
-          if (tokens.size () == 3 && strcmp (tokens[0].c_str (), "PING") == 0)
-            {
-              Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &startDumpTrafficTrace);
-              Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &TestApp::ProcessCommand, application,
-                                   tokens);
-              Simulator::Schedule (MilliSeconds (time.GetMilliSeconds () + 1000), &endDumpTrafficTrace);
-            }
-          else
-            {
-              Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &TestApp::ProcessCommand, application,
-                                   tokens);
-            }
-          return;
-        }
+          }
+        else
+          {
+            Simulator::Schedule (MilliSeconds (time.GetMilliSeconds()), &PennSearch::ProcessCommand, application, tokens);
+            return;
+          }
+      } 
+      else 
+      {
+        // Get application pointer
+        Ptr<TestApp> application = m_nodeContainer.Get (nodeNumber)->GetApplication (0)->GetObject<TestApp> ();
+        std::string command = std::string ((*iterator).c_str (), (*iterator).length ());
+        UpperCase (command);
+        if (command == "VERBOSITY" || command == "VERBOSE")
+          {
+            tokens.erase (iterator);
+            if (tokens.size () == 0)
+              return;
+            Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &SimulatorMain::SetApplicationVerbose, this,
+                                application, tokens);
+            return;
+          }
+        else
+          {
+            if (tokens.size () == 3 && strcmp (tokens[0].c_str (), "PING") == 0)
+              {
+                Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &startDumpTrafficTrace);
+                Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &TestApp::ProcessCommand, application,
+                                    tokens);
+                Simulator::Schedule (MilliSeconds (time.GetMilliSeconds () + 1000), &endDumpTrafficTrace);
+              }
+            else
+              {
+                Simulator::Schedule (MilliSeconds (time.GetMilliSeconds ()), &TestApp::ProcessCommand, application,
+                                    tokens);
+              }
+            return;
+          }
+      }
     }
   else if (module == LS_MODULE_NAME || module == DV_MODULE_NAME)
     {
@@ -866,7 +891,6 @@ main (int argc, char *argv[])
   std::string resultFile = "";
   std::string graderResultFile = "";
   std::string localAddress = "";
-  std::string project = "1";
 
   // Command Line parameters
   CommandLine cmd;
