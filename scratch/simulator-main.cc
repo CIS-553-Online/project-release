@@ -66,7 +66,8 @@
 
 #define LS_MODULE_NAME "LS"
 #define DV_MODULE_NAME "DV"
-#define APP_MODULE_NAME "TESTAPP"
+#define APP_MODULE_NAME_P1 "TESTAPP"
+#define APP_MODULE_NAME_P2 "PENNSEARCH"
 #define SIM_MODULE_NAME "SIM"
 
 #define START_TIME 0
@@ -442,7 +443,7 @@ SimulatorMain::ProcessNodeCommandTokens (uint32_t nodeNumber, std::vector<std::s
     return;
   iterator = tokens.begin ();
   // module name
-  if (module == APP_MODULE_NAME || module == "APP")
+  if (module == APP_MODULE_NAME_P1 || module == APP_MODULE_NAME_P2 || module == "APP")
     {
       if(project == "2") 
       {
@@ -1149,7 +1150,7 @@ main (int argc, char *argv[])
           str << i;
           application->SetNodeId (str.str());
           application->SetLocalAddress (application->ResolveNodeIpAddress(str.str()));
-          application->SetModuleName (APP_MODULE_NAME);
+          application->SetModuleName (APP_MODULE_NAME_P2);
         }
     }
   else
@@ -1166,7 +1167,7 @@ main (int argc, char *argv[])
           std::ostringstream str;
           str << i;
           application->SetNodeId (str.str ());
-          application->SetModuleName (APP_MODULE_NAME);
+          application->SetModuleName (APP_MODULE_NAME_P1);
         }
     }
 

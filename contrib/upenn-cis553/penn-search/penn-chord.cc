@@ -71,7 +71,7 @@ PennChord::StartApplication (void)
       InetSocketAddress local = InetSocketAddress (Ipv4Address::GetAny(), m_appPort);
       m_socket->Bind (local);
       m_socket->SetRecvCallback (MakeCallback (&PennChord::RecvMessage, this));
-      std::cout << "reset m_socekt to not null, now is " << m_socket << std::endl;
+      // std::cout << "reset m_socekt to not null, now is " << m_socket << std::endl;
     }  
   
   // Configure timers
